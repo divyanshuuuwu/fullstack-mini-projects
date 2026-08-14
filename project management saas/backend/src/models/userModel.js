@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
             enum:["owner","admin", "member"],
             default:"member"
         },
+    
+    avatar:{
+            type:String,
+            default:""
+        }
+    
 })
 
 const userModel = mongoose.model("User", userSchema)
