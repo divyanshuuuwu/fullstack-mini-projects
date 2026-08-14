@@ -17,6 +17,16 @@ const createProject = async (req, res) => {
 
 }
 
+const getProjects = async (req, res) => {
+    const userId = req.user.id;
+
+    try{
+        const projects = await projectModel.find({ user: userId });
+        res.status(200).json({ message: "Projects retrieved successfully", projects });
+    }catch(err){
+        res.status(500).json({ message: "error retrieving projects", error: err.message });
+    }
+}
 
 
 
@@ -33,5 +43,4 @@ const createProject = async (req, res) => {
 
 
 
-
-module.exports = { createProject };
+module.exports = { createProject , getProjects };
