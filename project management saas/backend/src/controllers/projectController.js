@@ -28,6 +28,20 @@ const getProjects = async (req, res) => {
     }
 }
 
+const getProjectById = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.user.id;
+
+    try{
+        const project = await projectModel.findOne({ _id: projectId, user: userId });
+        if(!project){
+            return res.status(404).json({ message: "Project not found" });
+        }
+        res.status(200).json({ message: "Project retrieved successfully", project });
+    }catch(err){
+        res.status(500).json({ message: "error retrieving project", error: err.message });
+    }
+}
 
 
 
@@ -38,9 +52,4 @@ const getProjects = async (req, res) => {
 
 
 
-
-
-
-
-
-module.exports = { createProject , getProjects };
+module.exports = { createProject , getProjects, getProjectById };

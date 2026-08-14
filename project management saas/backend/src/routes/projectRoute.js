@@ -5,6 +5,7 @@ const authMiddleware = require("../middlewares/authMiddleware")
 
 router.post("/create", authMiddleware, projectController.createProject)
 router.get("/get", authMiddleware, projectController.getProjects)
+router.get("/get/:id", authMiddleware, projectController.getProjectById)
 
 
 
