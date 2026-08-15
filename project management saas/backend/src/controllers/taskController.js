@@ -35,9 +35,14 @@ const createTask = async(req , res)=>{
 const getTasks = async(req, res)=>{
     const projectId = req.params.id;
     const userId = req.user.id;
+     
 
     try{
-        const tasks = await taskModel.find({project: projectId, assignedTo: userId})
+        const project = await projectModel.findOne({_id: projectId, user: userId})
+        if(!project){
+            return res.status(404).json({message: "Project not found or you don't have permission to view tasks for this project"})
+        }
+        const tasks = await taskModel.find({project: projectId})
         res.status(200).json({message: "Tasks retrieved successfully", tasks})
 
     }catch(err){
