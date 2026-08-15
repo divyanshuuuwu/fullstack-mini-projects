@@ -5,13 +5,15 @@ app.use(express.urlencoded({extended:true}))
 const cookieParser = require("cookie-parser")
 const authRoute = require("./routes/authRoute")
 const projectRoute = require("./routes/projectRoute")
+const taskRoute = require("./routes/taskRoute")
+
 
 app.use(cookieParser())
 
 
 app.use("/auth", authRoute)
 app.use("/projects", projectRoute);
-
+app.use("/projects/tasks", taskRoute);
 
 
 

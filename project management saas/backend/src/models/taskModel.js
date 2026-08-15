@@ -28,4 +28,10 @@ const taskSchema = new mongoose.Schema({
         enum: ["low", "medium", "high"],
         default: "medium"
     }   
-});
+},{ timestamps: true});
+
+
+
+const taskModel = mongoose.model("Task", taskSchema)
+
+module.exports = taskModel
