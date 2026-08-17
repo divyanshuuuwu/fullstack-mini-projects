@@ -4,9 +4,9 @@ import Siderbar from '../components/layout/Siderbar'
 
 const DashboardLayout = () => {
   return (
-    <div>
+    <div className="flex min-h-screen">
         <Siderbar/>
-        <main>
+        <main className="flex-1 bg-[rgba(11,11,11,1)] text-amber-50">
             <Outlet/>
         </main>
 
