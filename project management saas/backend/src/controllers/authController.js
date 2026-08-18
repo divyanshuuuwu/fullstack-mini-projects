@@ -35,7 +35,8 @@ const registerUser = async(req,res)=>{
 const loginUser = async(req,res)=>{
     const {email,password} = req.body
     
-    const user = await userModel.findOne({email})
+    try{
+        const user = await userModel.findOne({email})
     if(!user){
         return res.status(400).json({message:"user not found"})
     }
@@ -51,14 +52,45 @@ const loginUser = async(req,res)=>{
         process.env.JWT_SECRET, {expiresIn:"1h"})
         res.cookie("token", token)
         res.status(200).json({message:"login successful"})
+
+    }catch(err){
+        console.log(err)
+    }
     
+}
+
+const getUser = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const user = await userModel.findById(userId);
+
+        res.status(200).json({
+            message: "here is your user",
+            user
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "error getting user"
+        });
+    }
+};
+
+
+const logoutUser = async(req, res)=>{
+    res.clearCookie("token")
+
+    res.status(200).json({
+        message: "logout successful"
+    });
 }
 
 
 
 
 
-module.exports = {registerUser,loginUser}
+module.exports = {registerUser,loginUser, getUser, logoutUser}
 
 
 

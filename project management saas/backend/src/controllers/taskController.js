@@ -51,13 +51,6 @@ const getTasks = async(req, res)=>{
 
 }
 
-const getTaskById = async(req, res)=>{
-    const taskId = req.params.taskId;
-    const userId = req.user.id;
-
-    try{
-
-}
 
 
 
