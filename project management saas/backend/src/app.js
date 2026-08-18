@@ -7,6 +7,14 @@ const authRoute = require("./routes/authRoute")
 const projectRoute = require("./routes/projectRoute")
 const taskRoute = require("./routes/taskRoute")
 
+const cors = require("cors");
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
+
+
+
 
 app.use(cookieParser())
 

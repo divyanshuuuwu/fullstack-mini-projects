@@ -1,15 +1,26 @@
 import React from 'react'
 import {UserKey} from "lucide-react"
 import {useForm} from "react-hook-form"
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import useAuth from '../../components/hooks/useAuth'
+
 
 
 const Login = () => {
+const {login, isAuthenticated} = useAuth()
+const navigate = useNavigate()
 
-const {register, handleSubmit} = useForm()
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm();
 
 const onSubmit = (data)=>{
-  console.log(data)
+  login(data.email, data.password)
+  if(isAuthenticated){
+    navigate("/dashboard")
+  }
 }
 
 
@@ -33,8 +44,35 @@ const onSubmit = (data)=>{
       {/* middle */}
     <div className=' p-5 flex flex-col  '>
       <form className='flex flex-col items-center h-70 justify-around'  onSubmit={handleSubmit(onSubmit)}>
-      <input className='w-[80%] h-[20%] rounded-2xl px-2 bg-black text-white' placeholder='Email' type="text" {...register("email")} />
-      <input className=' w-[80%] h-[20%] rounded-2xl px-2 bg-black text-white' placeholder='Password' type="text" {...register("password")} />
+      <input className='w-[80%] h-[20%] rounded-2xl px-2 bg-black text-white' placeholder='Email' type="text" {...register("email",
+                {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Enter a valid email",
+              },
+            }
+                )} />
+                {errors.email && (
+            <p className="text-red-500">
+              {errors.email.message}
+            </p>
+          )}
+
+
+      <input className=' w-[80%] h-[20%] rounded-2xl px-2 bg-black text-white' placeholder='Password' type="text" {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters",
+                      },
+                    })} />
+
+                    {errors.password && (
+                    <p className="text-red-500">
+                      {errors.password.message}
+                  </p>
+                  )}
 
       <NavLink className="self-end mr-[10%] text-white"> Forgot password?</NavLink>
 

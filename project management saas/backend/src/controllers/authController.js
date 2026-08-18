@@ -63,7 +63,7 @@ const getUser = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        const user = await userModel.findById(userId);
+        const user = await userModel.findById(userId).select("-password");
 
         res.status(200).json({
             message: "here is your user",
