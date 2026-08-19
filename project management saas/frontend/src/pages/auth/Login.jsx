@@ -3,12 +3,16 @@ import {UserKey} from "lucide-react"
 import {useForm} from "react-hook-form"
 import { NavLink, useNavigate } from 'react-router-dom'
 import useAuth from '../../components/hooks/useAuth'
-
-
+import { useState } from 'react'
+import Loginerror from '../../components/ui/Loginerror'
+import Loginsuccess from '../../components/ui/Loginsuccess'
 
 const Login = () => {
-const {login, isAuthenticated} = useAuth()
+const {login, isAuthenticated, loginStatus, setLoginStatus} = useAuth()
 const navigate = useNavigate()
+
+
+
 
 const {
   register,
@@ -22,8 +26,17 @@ const onSubmit = async(data)=>{
   const success = await login(data.email, data.password)
    console.log(success)
   if(success){
-    navigate("/dashboard")
+    setLoginStatus("success")
+
+    setTimeout(() => {
+      navigate("/dashboard", { replace: true })
+    }, 2000);
   }
+  else{
+    setLoginStatus("error")
+    
+  }
+
 }
 
 
@@ -32,10 +45,17 @@ const onSubmit = async(data)=>{
 
 
 
-
   return (
+    
     //screen
     <div className='bg-black w-full h-screen flex justify-center items-center'>
+     {loginStatus === "error" && (
+  <Loginerror/>
+    )}
+    {loginStatus === "success" && (
+      <Loginsuccess/>
+)}
+
       {/* main container */}
     <div className='bg-[rgba(21,21,21,1)] w-[30%] h-[80%] rounded-4xl'>
       {/* top */}
@@ -84,6 +104,7 @@ const onSubmit = async(data)=>{
       <NavLink className="text-white"
       to="/register"
       >Create Account</NavLink>
+      
 
       </form>
 

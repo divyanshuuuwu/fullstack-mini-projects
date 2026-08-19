@@ -14,6 +14,7 @@ export const AuthProvider = ({children})=>{
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [loginStatus, setLoginStatus] = useState(null);
 
 const login = async(email, password)=>{
     try{
@@ -75,7 +76,7 @@ const getUser = async()=>{
 
 
 return(
-    <AuthContext.Provider value={{user, setUser, login, isAuthenticated, getUser}}>
+    <AuthContext.Provider value={{user, setUser, login, isAuthenticated, getUser, loginStatus, setLoginStatus, isLoading}}>
         {children}
     </AuthContext.Provider>
 )
