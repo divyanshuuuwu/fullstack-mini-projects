@@ -4,11 +4,16 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import AppRouter from './Routes/AppRouter'
 import { AuthProvider } from './components/context/authContext'
-
+import { ProjectProvider } from './components/context/ProjectContext'
+import { TaskProvider } from './components/context/TaskContext'                 
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
- <RouterProvider router = {AppRouter}/>
+ <ProjectProvider> 
+  <TaskProvider>
+    <RouterProvider router = {AppRouter}/>
+  </TaskProvider>
+ </ProjectProvider>
  </AuthProvider>
 )
 

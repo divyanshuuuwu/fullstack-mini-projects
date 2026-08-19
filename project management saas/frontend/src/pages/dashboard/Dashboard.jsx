@@ -2,10 +2,11 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Cards from '../../components/ui/Cards'
 import useAuth from '../../components/hooks/useAuth'
+import useProjects from '../../components/hooks/useProjects'
 
 const Dashboard = () => {
 const {user} = useAuth()
-
+const {projects} = useProjects()
 
 
   return (
