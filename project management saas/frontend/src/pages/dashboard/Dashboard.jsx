@@ -1,8 +1,13 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import Cards from '../../components/ui/Cards'
+import useAuth from '../../components/hooks/useAuth'
 
 const Dashboard = () => {
+const {user} = useAuth()
+
+
+
   return (
     //main screen
     <div className=' w-full h-screen flex  justify-center p-8'>
@@ -14,7 +19,7 @@ const Dashboard = () => {
       <div className=' w-[95%] min-h-25 flex justify-between p-5 items-center'>
         {/* heading */}
         <div>
-          <h1 className='text-4xl'>Good morning, Divyanshu</h1>
+          <h1 className='text-4xl'>Good morning, {user?.name}</h1>
           <h3>Here's whats's happening across your projects.</h3>
         </div>
         {/* create project btn */}

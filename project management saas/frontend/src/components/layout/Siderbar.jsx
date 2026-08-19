@@ -1,8 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Layers } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 const Siderbar = () => {
+  const {user} = useAuth()
+
+
   return (
     //main container
     <div className="w-80 bg-[rgba(21,21,21,1)] h-screen border-r-2 border-zinc-800 flex flex-col gap-5">
@@ -74,7 +78,7 @@ const Siderbar = () => {
             
         </div>
         <NavLink to="/dashboard/profile">
-        divyanshu
+        {user?.name}
         </NavLink>
     </div>
 
