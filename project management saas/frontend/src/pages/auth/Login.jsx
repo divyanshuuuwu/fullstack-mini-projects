@@ -16,9 +16,12 @@ const {
   formState: { errors },
 } = useForm();
 
-const onSubmit = (data)=>{
-  login(data.email, data.password)
-  if(isAuthenticated){
+
+
+const onSubmit = async(data)=>{
+  const success = await login(data.email, data.password)
+   console.log(success)
+  if(success){
     navigate("/dashboard")
   }
 }

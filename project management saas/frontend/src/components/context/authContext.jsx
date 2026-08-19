@@ -1,5 +1,7 @@
 import  axios from "axios"
 import { useEffect, createContext, useState } from "react";
+import { NavLink, useNavigate } from 'react-router-dom'
+
 
 
 
@@ -8,6 +10,7 @@ import { useEffect, createContext, useState } from "react";
 
 export const AuthContext = createContext()
 export const AuthProvider = ({children})=>{
+   
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -25,25 +28,32 @@ const login = async(email, password)=>{
         }
     )   
      await getUser();
+    return true
+
 
     }catch(err){
-        console.log(err)
+        console.log(err.response.data)
+        return false
+    
     }
 
 }
 
 const getUser = async()=>{
+         
+    try{
     const response = await axios.get("http://localhost:3000/auth/me",{
         withCredentials:true
     })
-    try{
+   
         setUser(response.data.user)
     setIsAuthenticated(true)
     console.log(response.data.user)
+    
 
 
     }catch(err){
-        console.log(err)
+        console.log(err.response.data)
         setUser(null)
         setIsAuthenticated(false)
 
