@@ -2,13 +2,15 @@ const projectModel = require("../models/projectModel");
 
 
 const createProject = async (req, res) => {
-    const { name, description } = req.body;
+    const { name, description, status, priority } = req.body;
     const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication
     try{
         const newProject = await projectModel.create({
             name,
             description,
-            user: userId
+            user: userId,
+            status: "pending",
+            priority // Default priority when creating a new project
         });
         res.status(201).json({ message: "Project created successfully", project: newProject });
     }catch(err){

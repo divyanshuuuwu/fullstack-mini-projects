@@ -16,6 +16,7 @@ const getProjects = async()=>{
         const response = await axios.get("http://localhost:3000/projects/get", {
                 withCredentials: true
             })
+            setProjects(response.data.projects)
         console.log(response.data)
 
     }catch(err){
@@ -25,8 +26,6 @@ const getProjects = async()=>{
 
 
 
-useEffect(() => {
-        getProjects()}, []);
 
 
 
