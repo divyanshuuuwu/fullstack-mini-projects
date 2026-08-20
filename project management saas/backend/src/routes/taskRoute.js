@@ -7,5 +7,6 @@ const authMiddleware = require('../middlewares/authMiddleware')
 
 router.post('/create/:id', authMiddleware, taskController.createTask)
 router.get('/getalltasks/:id', authMiddleware, taskController.getTasks)
+router.get('/gettask/:taskId', authMiddleware, taskController.getTaskById)
 
 module.exports = router
