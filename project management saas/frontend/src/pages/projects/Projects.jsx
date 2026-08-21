@@ -16,7 +16,7 @@ import {
 
 const ProjectDetails = () => {
   return (
-    <div className="min-h-screen bg-[#0b0b0b] text-white px-6 py-6 md:px-10">
+    <div className="h-screen bg-[#0b0b0b] text-white px-6 py-6 md:px-10 overflow-auto scrollbar-none">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
