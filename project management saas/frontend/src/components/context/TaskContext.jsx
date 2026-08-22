@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, createContext, useEffect,  } from "react";
+import { useState, createContext,   } from "react";
 
 export const TaskContext = createContext()
 export const TaskProvider = ({children})=>{
@@ -12,13 +12,24 @@ export const TaskProvider = ({children})=>{
 
 
     const getTasks = async()=>{
-        const response = await axios.get("http://localhost:3000/projects/tasks/getalltasks/:id")
+        try{
+            const response = await axios.get("http://localhost:3000/projects/tasks/getalltasks/:id", {
+                withCredentials: true
+            })
+            setTasks(response.data.tasks)
+            console.log(response.data)
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
     }
 
 
     return(
-        <TaskContext.Provider value={{tasks}}> 
+        <TaskContext.Provider value={{tasks, setTasks, getTasks}}> 
             {children}
         </TaskContext.Provider>
     )
 }
+
+
+

@@ -1,15 +1,14 @@
-import React from "react";
+
 import { NavLink } from "react-router-dom";
 import { Layers } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 
 const Siderbar = () => {
-  const {user} = useAuth()
-
+  const { user } = useAuth();
 
   return (
     //main container
-    <div className="w-80 bg-[rgba(21,21,21,1)] h-screen border-r-2 border-zinc-800 flex flex-col gap-5">
+    <div className="w-80 bg-[rgba(11,11,11,1)] h-screen border-r-2 border-zinc-800 flex flex-col gap-5">
       {/* logo */}
       <div className="p-6 flex gap-5 items-center">
         <Layers size={40} color="#d54444" />
@@ -20,7 +19,7 @@ const Siderbar = () => {
       <nav className="flex flex-col p-6 gap-5">
         <NavLink
           to="/dashboard"
-            end
+          end
           className={({ isActive }) =>
             `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
                             ${
@@ -33,60 +32,54 @@ const Siderbar = () => {
           Dashboard
         </NavLink>
 
-        <NavLink to="/dashboard/taskdetails"
-                         className={({ isActive }) =>
-                            `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
+        <NavLink
+          to="/dashboard/taskdetails"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
                             ${
-                            isActive
+                              isActive
                                 ? "bg-[#3a3a3a] text-white"
                                 : "text-[#b8b8b8] hover:bg-[#252525] hover:text-white"
                             }`
-                        }
+          }
+        >
+          My Tasks
+        </NavLink>
 
-        >My Tasks</NavLink>
-
-        <NavLink to="/dashboard/projects"
-                    className={({ isActive }) =>
-                `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
+        <NavLink
+          to="/dashboard/projects"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
                 ${
-                isActive
+                  isActive
                     ? "bg-[#3a3a3a] text-white"
                     : "text-[#b8b8b8] hover:bg-[#252525] hover:text-white"
                 }`
-            }
-        
-        
-        >Projects</NavLink>
+          }
+        >
+          Projects
+        </NavLink>
 
-        <NavLink to="/dashboard/settings"
-                         className={({ isActive }) =>
-                    `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
+        <NavLink
+          to="/dashboard/settings"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
                     ${
-                    isActive
+                      isActive
                         ? "bg-[#3a3a3a] text-white"
                         : "text-[#b8b8b8] hover:bg-[#252525] hover:text-white"
                     }`
-                }
-        
-        
-        >Settings</NavLink>
-      </nav>
-    
-    {/* profile */}
-    <div className="mt-auto p-6 flex items-center gap-4 text-white border-t border-zinc-800">
-        <div className="h-10 w-10 bg-amber-200 rounded-full" >
-            
-        </div>
-        <NavLink to="/dashboard/profile">
-        {user?.name}
+          }
+        >
+          Settings
         </NavLink>
-    </div>
+      </nav>
 
-
-
-
-
-
+      {/* profile */}
+      <div className="mt-auto p-6 flex items-center gap-4 text-white border-t border-zinc-800">
+        <div className="h-10 w-10 bg-amber-200 rounded-full"></div>
+        <NavLink to="/dashboard/profile">{user?.name}</NavLink>
+      </div>
     </div>
   );
 };
