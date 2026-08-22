@@ -14,6 +14,13 @@ import {
   Trash2,
 } from "lucide-react";
 
+import StatCard from "./projectUi/StatCard";
+import TaskRow from "./projectUi/Taskrow";
+import Activity from "./projectUi/Activity";
+import DetailItem from "./projectUi/DetailItem";
+import Member from "./projectUi/Member";
+
+
 const ProjectDetails = () => {
   return (
     <div className="h-screen bg-[#0b0b0b] text-white px-6 py-6 md:px-10 overflow-auto scrollbar-none">
@@ -437,176 +444,14 @@ const ProjectDetails = () => {
 
 /* ---------------- Components ---------------- */
 
-const StatCard = ({ icon, label, value }) => {
-  return (
-    <div className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5">
-
-      <div className="flex items-center gap-2 text-gray-600 mb-3">
-        {icon}
-
-        <span className="text-xs">
-          {label}
-        </span>
-      </div>
-
-      <p className="text-2xl font-semibold">
-        {value}
-      </p>
-
-    </div>
-  );
-};
 
 
-const TaskRow = ({
-  title,
-  status,
-  priority,
-  assignee,
-  completed,
-}) => {
-  return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-6 py-4 hover:bg-[#151515] transition cursor-pointer">
-
-      <div className="flex items-center gap-3 min-w-0">
-
-        {completed ? (
-          <CheckCircle2
-            size={18}
-            className="text-gray-500 shrink-0"
-          />
-        ) : (
-          <Circle
-            size={18}
-            className="text-gray-700 shrink-0"
-          />
-        )}
-
-        <span
-          className={`text-sm truncate ${
-            completed
-              ? "text-gray-600 line-through"
-              : "text-gray-300"
-          }`}
-        >
-          {title}
-        </span>
-
-      </div>
-
-      <div className="flex items-center gap-4 pl-7 md:pl-0">
-
-        <span
-          className={`text-xs ${
-            status === "Done"
-              ? "text-gray-500"
-              : status === "In Progress"
-              ? "text-blue-400"
-              : "text-gray-600"
-          }`}
-        >
-          {status}
-        </span>
-
-        <span
-          className={`text-xs ${
-            priority === "High"
-              ? "text-red-400"
-              : priority === "Medium"
-              ? "text-yellow-500"
-              : "text-gray-600"
-          }`}
-        >
-          {priority}
-        </span>
-
-        <div className="w-7 h-7 rounded-full bg-[#1c1c1c] flex items-center justify-center text-[10px] text-gray-400">
-          {assignee}
-        </div>
-
-      </div>
-
-    </div>
-  );
-};
 
 
-const Activity = ({
-  initials,
-  text,
-  highlight,
-  action,
-  time,
-}) => {
-  return (
-    <div className="flex gap-3">
-
-      <div className="w-8 h-8 rounded-full bg-[#1c1c1c] flex items-center justify-center text-[10px] text-gray-400 shrink-0">
-        {initials}
-      </div>
-
-      <div>
-
-        <p className="text-sm text-gray-400">
-          {text}{" "}
-          <span className="text-gray-200">
-            {highlight}
-          </span>{" "}
-          {action}
-        </p>
-
-        <p className="text-xs text-gray-700 mt-1">
-          {time}
-        </p>
-
-      </div>
-
-    </div>
-  );
-};
 
 
-const DetailItem = ({ label, value }) => {
-  return (
-    <div>
-
-      <p className="text-xs text-gray-600 mb-2">
-        {label}
-      </p>
-
-      <div className="text-sm text-gray-300">
-        {value}
-      </div>
-
-    </div>
-  );
-};
 
 
-const Member = ({ initials, name, role }) => {
-  return (
-    <div className="flex items-center gap-3">
 
-      <div className="w-9 h-9 rounded-full bg-[#1c1c1c] flex items-center justify-center text-xs text-gray-400">
-        {initials}
-      </div>
-
-      <div className="flex-1 min-w-0">
-
-        <p className="text-sm text-gray-300 truncate">
-          {name}
-        </p>
-
-        <p className="text-xs text-gray-600">
-          {role}
-        </p>
-
-      </div>
-
-      <User size={14} className="text-gray-700" />
-
-    </div>
-  );
-};
 
 export default ProjectDetails;
