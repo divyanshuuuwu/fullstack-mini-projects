@@ -11,7 +11,7 @@ const createProject = async (req, res) => {
             owner: userId,
             status: "pending",
             priority, // Default priority when creating a new project
-            members: [userId, ...members] // Include members when creating a new project
+            members: userId// Include members when creating a new project
         });
         res.status(201).json({ message: "Project created successfully", project: newProject });
     }catch(err){

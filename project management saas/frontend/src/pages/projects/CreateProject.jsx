@@ -1,9 +1,56 @@
 import React from "react";
 import { ArrowLeft, Plus, X } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import axios from "axios"
 
 const CreateProject = () => {
   const navigate = useNavigate();
+
+
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm();
+
+const onSubmit = async (data) => {
+  const { description, priority, members } = data;
+  const name = data.projectName;
+
+  console.log("FORM DATA:", data);
+
+  const payload = {
+    name,
+    description,
+    priority,
+    // members,
+  };
+
+  console.log("REQUEST PAYLOAD:", payload);
+
+  try {
+    const response = await axios.post(
+      "http://localhost:3000/projects/create",
+      payload,
+      { withCredentials: true }
+    );
+
+    console.log(response.data);
+    navigate("/dashboard");
+  } catch (error) {
+    console.error("CREATE PROJECT ERROR:", error);
+    console.error("SERVER RESPONSE:", error.response?.data);
+  }
+};
+
+
+
+
+
+
 
   return (
     <div className="h-screen bg-[#0b0b0b] text-white px-6 py-8 overflow-auto scrollbar-none">
@@ -44,6 +91,7 @@ const CreateProject = () => {
           </div>
 
           {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6 space-y-6">
 
             {/* Project Name */}
@@ -67,7 +115,7 @@ const CreateProject = () => {
                   focus:border-[#3a3a3a]
                   transition
                 "
-              />
+                {...register("projectName")} />
             </div>
 
             {/* Description */}
@@ -92,17 +140,18 @@ const CreateProject = () => {
                   focus:border-[#3a3a3a]
                   transition
                 "
-              />
+                 {...register("description")} />
             </div>
 
-            {/* Status */}
+            {/* priority */}
             <div>
               <label className="block text-sm text-gray-300 mb-2">
-                Status
+                priority
               </label>
 
               <select
-                defaultValue="pending"
+              {...register("priority")}
+                defaultValue="medium"
                 className="
                   w-full
                   bg-[#0b0b0b]
@@ -115,9 +164,9 @@ const CreateProject = () => {
                   transition
                 "
               >
-                <option value="pending">Pending</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
 
@@ -183,7 +232,7 @@ const CreateProject = () => {
 
             <button
               type="button"
-              onClick={() => navigate("/projects")}
+              onClick={() => navigate("/dashboard") }
               className="
                 px-4 py-2.5
                 rounded-xl
@@ -208,12 +257,16 @@ const CreateProject = () => {
                 hover:bg-gray-200
                 transition
               "
+             
             >
               <Plus size={16} />
               Create project
             </button>
-
+            
           </div>
+
+        </form>
+
 
         </div>
 
