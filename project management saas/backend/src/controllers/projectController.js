@@ -24,7 +24,7 @@ const getProjects = async (req, res) => {
     const userId = req.user.id;
 
     try{
-        const projects = await projectModel.find({ owner: userId });
+        const projects = await projectModel.find({ owner: userId }).populate("members", "name email");
         res.status(200).json({ message: "Projects retrieved successfully", projects });
     }catch(err){
         res.status(500).json({ message: "error retrieving projects", error: err.message });

@@ -47,7 +47,7 @@ const getTasks = async(req, res)=>{
         if(!project){
             return res.status(404).json({message: "Project not found or you don't have permission to view tasks for this project"})
         }
-        const tasks = await taskModel.find({project: projectId})
+        const tasks = await taskModel.find({project: projectId}).populate("assignedTo", "name email")
         res.status(200).json({message: "Tasks retrieved successfully", tasks})
 
     }catch(err){
@@ -76,4 +76,27 @@ const getTaskById = async(req, res)=>{
 
 
 
-module.exports = {createTask, getTasks, getTaskById}
+const getMyTasks = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const tasks = await taskModel.find({
+            assignedTo: userId
+        });
+
+        res.status(200).json({
+            message: "Tasks retrieved successfully",
+            tasks
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Error retrieving tasks",
+            error: err.message
+        });
+    }
+};
+
+
+
+module.exports = {createTask, getTasks, getTaskById, getMyTasks}
