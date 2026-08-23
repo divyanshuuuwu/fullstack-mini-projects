@@ -18,11 +18,12 @@ export const TaskProvider = ({children})=>{
             })
             setTasks(response.data.tasks)
             console.log(response.data)
+            console.log(tasks)
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
     }
-
+getTasks()
 
     return(
         <TaskContext.Provider value={{tasks, setTasks, getTasks}}> 

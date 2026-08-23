@@ -7,11 +7,15 @@ const projectSchema = new mongoose.Schema({
     description:{
         type:String,
         required:true,},
-    user:{
+    owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true
     },
+    members:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
     status:{
         type:String,
         enum:["pending", "in-progress", "completed", "overdue"],
