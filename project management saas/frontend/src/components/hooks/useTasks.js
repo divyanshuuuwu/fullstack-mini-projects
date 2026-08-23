@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import { TaskContext } from "../context/TaskContext";
 
-const useTask = ()=>{
-    return useEffect(TaskContext)
+const useTasks = ()=>{
+    return useContext(TaskContext)
 }
 
-export default useTask
+export default useTasks

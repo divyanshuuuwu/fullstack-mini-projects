@@ -7,13 +7,9 @@ export const TaskProvider = ({children})=>{
     const [tasks, setTasks] = useState(null)
 
 
-
-
-
-
-    const getTasks = async()=>{
+    const getMytasks = async()=>{
         try{
-            const response = await axios.get("http://localhost:3000/projects/tasks/getalltasks/:id", {
+            const response = await axios.get("http://localhost:3000/projects/tasks/mytasks", {
                 withCredentials: true
             })
             setTasks(response.data.tasks)
@@ -23,10 +19,10 @@ export const TaskProvider = ({children})=>{
             console.error("Error fetching tasks:", error);
         }
     }
-getTasks()
+
 
     return(
-        <TaskContext.Provider value={{tasks, setTasks, getTasks}}> 
+        <TaskContext.Provider value={{tasks, setTasks, getMytasks}}> 
             {children}
         </TaskContext.Provider>
     )

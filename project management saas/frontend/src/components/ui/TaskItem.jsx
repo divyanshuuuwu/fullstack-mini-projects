@@ -19,9 +19,9 @@ const TaskItem = ({ title, project, status, priority }) => {
 
             <span
               className={`text-[10px] shrink-0 ${
-                priority === "High"
+                priority === "high"
                   ? "text-red-400"
-                  : priority === "Medium"
+                  : priority === "medium"
                     ? "text-yellow-500"
                     : "text-gray-600"
               }`}
@@ -37,7 +37,7 @@ const TaskItem = ({ title, project, status, priority }) => {
 
             <p
               className={`text-[11px] ${
-                status === "In Progress" ? "text-blue-400" : "text-gray-600"
+                status === "in progress" ? "text-blue-400" : "text-gray-600"
               }`}
             >
               {status}

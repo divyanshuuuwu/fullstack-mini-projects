@@ -1,5 +1,6 @@
 import React from 'react'
 import { CalendarDays, FolderKanban } from 'lucide-react'
+import { useEffect } from 'react'
 
 import ProgressRow from "../../components/ui/ProgressRow";
 import UpcomingItem from "../../components/ui/UpcomingItem";
@@ -7,11 +8,16 @@ import UpcomingItem from "../../components/ui/UpcomingItem";
 
 
 import useProjects from "../../components/hooks/useProjects";
-
+import useTasks from "../../components/hooks/useTasks";
 
 
 const BottomSection = () => {
   const { projects } = useProjects();
+  const { tasks, getMytasks } = useTasks();
+
+  useEffect(() => {
+    getMytasks();
+  }, []);
     
 
 const totalProjects = projects?.length || 0;
@@ -97,25 +103,24 @@ const totalProjects = projects?.length || 0;
               <CalendarDays size={18} className="text-gray-600" />
             </div>
 
-            <div className="space-y-3">
+            {/* Tasks */}
+        <div className="p-4 space-y-2">
+          {tasks?.length > 0 ? (
+            tasks.map((task) => (
               <UpcomingItem
-                title="JWT Authentication"
-                project="Flowboard Backend"
-                date="Tomorrow"
+                key={task._id}
+                title={task.title}
+                project={task.project?.name}
+                status={task.status}
+                priority={task.priority}
               />
-
-              <UpcomingItem
-                title="Project API"
-                project="Flowboard Backend"
-                date="Aug 25"
-              />
-
-              <UpcomingItem
-                title="Dashboard redesign"
-                project="Flowboard Frontend"
-                date="Aug 28"
-              />
-            </div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 text-center py-10">
+              No tasks assigned to you
+            </p>
+          )}
+        </div>
           </section>
         </div>
   )
