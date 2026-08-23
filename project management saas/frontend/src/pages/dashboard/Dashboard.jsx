@@ -71,7 +71,7 @@ const Dashboard = () => {
           </div>
 
           <NavLink
-            to="/projects/create"
+            to="/dashboard/createProject"
             className="inline-flex items-center justify-center gap-2
                        bg-white text-black px-4 py-2.5 rounded-lg
                        text-sm font-medium
