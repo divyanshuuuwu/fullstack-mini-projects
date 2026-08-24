@@ -59,6 +59,19 @@ const Siderbar = () => {
         >
           Projects
         </NavLink>
+        <NavLink
+          to="/dashboard/teams"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-6 py-4 rounded-xl text-xl transition-all duration-200
+                    ${
+                      isActive
+                        ? "bg-[#3a3a3a] text-white"
+                        : "text-[#b8b8b8] hover:bg-[#252525] hover:text-white"
+                    }`
+          }
+        >
+          My Teams 
+        </NavLink>
 
         <NavLink
           to="/dashboard/settings"
