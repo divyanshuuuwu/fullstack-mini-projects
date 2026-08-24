@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser")
 const authRoute = require("./routes/authRoute")
 const projectRoute = require("./routes/projectRoute")
 const taskRoute = require("./routes/taskRoute")
+const teamRoute = require("./routes/teamRoute")
 
 const cors = require("cors");
 app.use(cors({
@@ -22,7 +23,7 @@ app.use(cookieParser())
 app.use("/auth", authRoute)
 app.use("/projects", projectRoute);
 app.use("/projects/tasks", taskRoute);
-
+app.use("/teams", teamRoute);
 
 
 
