@@ -4,6 +4,7 @@ import {
   ArrowRight,
   MoreHorizontal,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const MyTeams = () => {
   return (
@@ -22,20 +23,16 @@ const MyTeams = () => {
           </p>
         </div>
 
-        <button
-          className="
-            flex items-center gap-2
-            bg-white text-black
-            px-4 py-2.5
-            rounded-lg
-            text-sm font-medium
-            hover:bg-gray-200
-            transition
-          "
-        >
-          <Plus size={17} />
-          Create Team
-        </button>
+       <NavLink
+            to="/dashboard/createteam"
+            className="inline-flex items-center justify-center gap-2
+                       bg-white text-black px-4 py-2.5 rounded-lg
+                       text-sm font-medium
+                       hover:bg-gray-200 transition"
+          >
+            <Plus size={17} />
+            Create Team
+          </NavLink>
 
       </div>
 
