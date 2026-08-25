@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { Users, Plus, X, ArrowLeft } from "lucide-react";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+
 
 const CreateTeam = () => {
   const [email, setEmail] = useState("");
-
+  const navigate = useNavigate()
   // UI placeholder only
-  const [members, setMembers] = useState([
-    "rahul@gmail.com",
-    "aman@gmail.com",
-  ]);
+  const [members, setMembers] = useState([]);
 
   const addMember = () => {
     if (!email.trim()) return;
 
     setMembers([...members, email.trim()]);
     setEmail("");
+    // console.log(email) 
   };
+
+  const [teamName, setTeamName] = useState("")
+  const addTeam = (e) => {
+    // if (!teamName.trim()) return;
+    setTeamName(e.target.value)
+    
+    // console.log(teamName)
+  }
+  
 
   const removeMember = (emailToRemove) => {
     setMembers(
@@ -23,11 +33,29 @@ const CreateTeam = () => {
     );
   };
 
+  const createTeamAPI = async () => {
+    try{
+      const res = await axios.post("http://localhost:3000/teams/create", {
+        name: teamName,
+        members: members
+      },{withCredentials: true})
+      console.log(res)
+      setTeamName("")
+      setMembers([])
+      navigate("/dashboard/teams")
+      
+
+    }catch(e){
+      console.log(e)
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#0b0b0b] text-white px-6 py-8">
+    <div className="h-screen w-full bg-[#0b0b0b] text-white px-6 py-8 overflow-auto scrollbar-none">
 
       {/* Back */}
       <button
+        onClick={() => navigate("/dashboard/teams")}
         className="
           flex items-center gap-2
           text-sm text-gray-500
@@ -86,6 +114,8 @@ const CreateTeam = () => {
             </label>
 
             <input
+              value={teamName}
+              onChange={addTeam}
               type="text"
               placeholder="e.g. Frontend Team"
               className="
@@ -225,6 +255,7 @@ const CreateTeam = () => {
           <div className="border-t border-white/[0.06] mt-7 pt-5">
 
             <button
+            onClick={createTeamAPI}
               className="
                 w-full
                 bg-white
