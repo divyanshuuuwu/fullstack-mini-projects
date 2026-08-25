@@ -52,7 +52,7 @@ const createTeam = async (req, res) => {
 const getTeams = async (req, res) => {
   const userId = req.user.id;
   try {
-    const teams = await teamModel.find({ members: { $in: [userId] } });
+    const teams = await teamModel.find({ members: { $in: [userId] } }).populate("members", "name");
     res.status(200).json({ message: "Teams retrieved successfully", teams });
   } catch (err) {
     res

@@ -6,12 +6,15 @@ import AppRouter from './Routes/AppRouter'
 import { AuthProvider } from './components/context/authContext'
 import { ProjectProvider } from './components/context/ProjectContext'
 import { TaskProvider } from './components/context/TaskContext'                 
+import { TeamProvider } from './components/context/TeamContext'
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
  <ProjectProvider> 
   <TaskProvider>
+    <TeamProvider>
     <RouterProvider router = {AppRouter}/>
+    </TeamProvider>
   </TaskProvider>
  </ProjectProvider>
  </AuthProvider>
