@@ -7,7 +7,7 @@ export const ProjectProvider =({children}) => {
 
 
 
-const [projects, setProjects] = useState(null)
+const [projects, setProjects] = useState([])
 
 
 

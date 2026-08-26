@@ -1,457 +1,124 @@
 import React from "react";
 import {
-  ArrowLeft,
+  Plus,
+  Search,
   MoreHorizontal,
-  Pencil,
-  CalendarDays,
+  FolderKanban,
   Users,
   CheckCircle2,
   Clock3,
   Circle,
-  Plus,
-  ListTodo,
-  User,
-  Trash2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import ProjectCard from "./ProjectCard";
 
-import StatCard from "./projectUi/StatCard";
-import TaskRow from "./projectUi/Taskrow";
-import Activity from "./projectUi/Activity";
-import DetailItem from "./projectUi/DetailItem";
-import Member from "./projectUi/Member";
+const Projects = () => {
+  const navigate = useNavigate();
 
+  
 
-const ProjectDetails = () => {
   return (
-    <div className="h-screen bg-[#0b0b0b] text-white px-6 py-6 md:px-10 overflow-auto scrollbar-none">
+    <div className="h-screen bg-[#0b0b0b] text-white px-6 py-8 overflow-auto scrollbar-none">
 
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto">
 
-        <button className="flex items-center gap-2 text-gray-500 hover:text-white transition">
-          <ArrowLeft size={18} />
-          <span className="text-sm">Back to Projects</span>
-        </button>
-
-        <button className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-[#171717] transition">
-          <MoreHorizontal size={20} />
-        </button>
-
-      </div>
-
-
-      {/* Project Header */}
-      <div className="mb-8">
-
-        <div className="flex flex-wrap items-center gap-3 mb-4">
-
-          <span className="px-3 py-1 rounded-full text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            In Progress
-          </span>
-
-          <span className="text-xs text-gray-600">
-            Project #PRJ-024
-          </span>
-
-        </div>
-
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
 
           <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-9 h-9 rounded-xl bg-[#151515] border border-[#252525] flex items-center justify-center">
+                <FolderKanban size={18} className="text-gray-300" />
+              </div>
 
-            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-              Flowboard Backend
-            </h1>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                My Projects
+              </h1>
+            </div>
 
-            <p className="text-gray-500 text-sm mt-2 max-w-2xl leading-6">
-              Building the backend infrastructure and APIs for the
-              Flowboard project management application.
+            <p className="text-sm text-gray-500">
+              Manage your projects and keep track of your team's progress.
             </p>
-
           </div>
 
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-white text-black text-sm font-medium hover:bg-gray-200 transition">
-            <Pencil size={15} />
-            Edit Project
+          <button
+            onClick={() => navigate("/dashboard/createProject")}
+            className="
+              inline-flex items-center justify-center gap-2
+              px-4 py-2.5
+              rounded-xl
+              bg-white
+              text-black
+              text-sm font-medium
+              hover:bg-gray-200
+              transition
+            "
+          >
+            <Plus size={16} />
+            New project
           </button>
 
         </div>
 
-      </div>
 
+        {/* Toolbar */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-5">
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search
+              size={16}
+              className="
+                absolute left-4 top-1/2
+                -translate-y-1/2
+                text-gray-600
+              "
+            />
 
-        <StatCard
-          icon={<ListTodo size={17} />}
-          label="Total Tasks"
-          value="24"
-        />
+            <input
+              type="text"
+              placeholder="Search projects..."
+              className="
+                w-full
+                bg-[#111111]
+                border border-[#1f1f1f]
+                rounded-xl
+                pl-11 pr-4 py-3
+                text-sm text-white
+                placeholder:text-gray-600
+                outline-none
+                focus:border-[#353535]
+                transition
+              "
+            />
+          </div>
 
-        <StatCard
-          icon={<Clock3 size={17} />}
-          label="In Progress"
-          value="8"
-        />
-
-        <StatCard
-          icon={<CheckCircle2 size={17} />}
-          label="Completed"
-          value="12"
-        />
-
-        <StatCard
-          icon={<Users size={17} />}
-          label="Members"
-          value="6"
-        />
-
-      </div>
-
-
-      {/* Main Layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6">
-
-
-        {/* LEFT */}
-        <div className="space-y-6">
-
-
-          {/* Progress */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-6">
-
-            <div className="flex items-center justify-between mb-4">
-
-              <div>
-                <h2 className="text-lg font-medium">
-                  Project Progress
-                </h2>
-
-                <p className="text-xs text-gray-600 mt-1">
-                  Overall completion of this project
-                </p>
-              </div>
-
-              <span className="text-lg font-medium">
-                50%
-              </span>
-
-            </div>
-
-            <div className="w-full h-2 bg-[#1c1c1c] rounded-full overflow-hidden">
-              <div className="h-full w-[50%] bg-white rounded-full" />
-            </div>
-
-            <div className="flex justify-between mt-3">
-
-              <span className="text-xs text-gray-600">
-                12 of 24 tasks completed
-              </span>
-
-              <span className="text-xs text-gray-600">
-                50%
-              </span>
-
-            </div>
-
-          </section>
-
-
-          {/* Tasks */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl">
-
-            <div className="flex items-center justify-between px-6 py-5 border-b border-[#1f1f1f]">
-
-              <div>
-                <h2 className="text-lg font-medium">
-                  Tasks
-                </h2>
-
-                <p className="text-xs text-gray-600 mt-1">
-                  Tasks belonging to this project
-                </p>
-              </div>
-
-              <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition">
-                <Plus size={16} />
-                Add Task
-              </button>
-
-            </div>
-
-
-            {/* Task List */}
-            <div className="divide-y divide-[#1f1f1f]">
-
-              <TaskRow
-                title="Implement JWT Authentication"
-                status="In Progress"
-                priority="High"
-                assignee="RS"
-              />
-
-              <TaskRow
-                title="Create Project API"
-                status="Done"
-                priority="Medium"
-                assignee="DS"
-                completed
-              />
-
-              <TaskRow
-                title="Build Task API"
-                status="In Progress"
-                priority="High"
-                assignee="RS"
-              />
-
-              <TaskRow
-                title="Implement Role Based Access"
-                status="Todo"
-                priority="Medium"
-                assignee="AK"
-              />
-
-              <TaskRow
-                title="Write API Documentation"
-                status="Todo"
-                priority="Low"
-                assignee="DS"
-              />
-
-            </div>
-
-            <div className="px-6 py-4 border-t border-[#1f1f1f]">
-
-              <button className="text-sm text-gray-500 hover:text-white transition">
-                View all tasks →
-              </button>
-
-            </div>
-
-          </section>
-
-
-          {/* Recent Activity */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-6">
-
-            <h2 className="text-lg font-medium mb-5">
-              Recent Activity
-            </h2>
-
-            <div className="space-y-5">
-
-              <Activity
-                initials="RS"
-                text="Rahul moved"
-                highlight="Implement JWT Authentication"
-                action="to In Progress"
-                time="2 hours ago"
-              />
-
-              <Activity
-                initials="DS"
-                text="You completed"
-                highlight="Create Project API"
-                action=""
-                time="5 hours ago"
-              />
-
-              <Activity
-                initials="AK"
-                text="Aman was assigned to"
-                highlight="Implement Role Based Access"
-                action=""
-                time="Yesterday"
-              />
-
-              <Activity
-                initials="DS"
-                text="You created"
-                highlight="Write API Documentation"
-                action=""
-                time="Yesterday"
-              />
-
-            </div>
-
-          </section>
+          {/* Filter */}
+          <select
+            className="
+              bg-[#111111]
+              border border-[#1f1f1f]
+              rounded-xl
+              px-4 py-3
+              text-sm text-gray-400
+              outline-none
+              focus:border-[#353535]
+              transition
+            "
+          >
+            <option>All projects</option>
+            <option>In Progress</option>
+            <option>Planning</option>
+            <option>Completed</option>
+          </select>
 
         </div>
-
-
-        {/* RIGHT SIDEBAR */}
-        <div className="space-y-6">
-
-
-          {/* Project Details */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5">
-
-            <h2 className="text-sm font-medium mb-5">
-              Project Details
-            </h2>
-
-            <div className="space-y-5">
-
-              {/* Status */}
-              <DetailItem
-                label="Status"
-                value={
-                  <span className="text-blue-400">
-                    In Progress
-                  </span>
-                }
-              />
-
-              {/* Owner */}
-              <DetailItem
-                label="Owner"
-                value={
-                  <div className="flex items-center gap-2">
-
-                    <div className="w-7 h-7 rounded-full bg-[#1c1c1c] flex items-center justify-center text-[10px]">
-                      DS
-                    </div>
-
-                    <span>
-                      Divyanshu Shah
-                    </span>
-
-                  </div>
-                }
-              />
-
-              {/* Created */}
-              <DetailItem
-                label="Created"
-                value={
-                  <div className="flex items-center gap-2">
-                    <CalendarDays size={15} className="text-gray-600" />
-                    Aug 18, 2026
-                  </div>
-                }
-              />
-
-              {/* Deadline */}
-              <DetailItem
-                label="Deadline"
-                value={
-                  <div className="flex items-center gap-2">
-                    <CalendarDays size={15} className="text-gray-600" />
-                    Sep 10, 2026
-                  </div>
-                }
-              />
-
-              {/* Tasks */}
-              <DetailItem
-                label="Tasks"
-                value="24"
-              />
-
-            </div>
-
-          </section>
-
-
-          {/* Members */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5">
-
-            <div className="flex items-center justify-between mb-5">
-
-              <h2 className="text-sm font-medium">
-                Members
-              </h2>
-
-              <button className="text-xs text-gray-500 hover:text-white">
-                + Add
-              </button>
-
-            </div>
-
-            <div className="space-y-4">
-
-              <Member
-                initials="DS"
-                name="Divyanshu Shah"
-                role="Owner"
-              />
-
-              <Member
-                initials="RS"
-                name="Rahul Sharma"
-                role="Backend"
-              />
-
-              <Member
-                initials="AK"
-                name="Aman Kumar"
-                role="Frontend"
-              />
-
-              <Member
-                initials="PS"
-                name="Priya Singh"
-                role="Designer"
-              />
-
-            </div>
-
-            <button className="w-full mt-5 text-xs text-gray-500 hover:text-white transition">
-              View all members
-            </button>
-
-          </section>
-
-
-          {/* Quick Actions */}
-          <section className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5">
-
-            <h2 className="text-sm font-medium mb-4">
-              Quick Actions
-            </h2>
-
-            <div className="space-y-2">
-
-              <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-[#171717] transition">
-                <ListTodo size={16} />
-                Open Kanban Board
-              </button>
-
-              <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-[#171717] transition">
-                <Users size={16} />
-                Manage Members
-              </button>
-
-              <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/5 transition">
-                <Trash2 size={16} />
-                Delete Project
-              </button>
-
-            </div>
-
-          </section>
-
-        </div>
+      {/* project card */}
+      <ProjectCard />
 
       </div>
-
     </div>
   );
 };
 
-
-/* ---------------- Components ---------------- */
-
-
-
-
-
-
-
-
-
-
-
-export default ProjectDetails;
+export default Projects;
