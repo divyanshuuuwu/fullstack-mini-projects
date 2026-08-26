@@ -69,7 +69,7 @@ const TeamCard = ({team}) => {
               </p>
 
               <span className="text-xs text-gray-600">
-                4 members
+                {team.members.length} Members
               </span>
 
             </div>

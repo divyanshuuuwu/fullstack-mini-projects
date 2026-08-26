@@ -1,24 +1,44 @@
 const projectModel = require("../models/projectModel");
-
+const userModel = require("../models/userModel");
 
 const createProject = async (req, res) => {
     const { name, description, status, priority, members } = req.body;
-    const userId = req.user.id; // Assuming the user ID is stored in req.user after authentication
-    try{
+    const userId = req.user.id;
+
+    try {
+        const users = await userModel.find({
+            email: { $in: members },
+        });
+
+        if (users.length !== members.length) {
+            return res.status(400).json({
+                message: "One or more emails not found",
+            });
+        }
+
+        const memberIds = users.map((user) => user._id);
+
         const newProject = await projectModel.create({
             name,
             description,
             owner: userId,
             status: "pending",
-            priority, // Default priority when creating a new project
-            members: userId// Include members when creating a new project
+            priority,
+            members: [userId, ...memberIds],
         });
-        res.status(201).json({ message: "Project created successfully", project: newProject });
-    }catch(err){
-        res.status(500).json({ message: "error creating project", error: err.message });
-    }
 
-}
+        res.status(201).json({
+            message: "Project created successfully",
+            project: newProject,
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: "error creating project",
+            error: err.message,
+        });
+    }
+};
 
 const getProjects = async (req, res) => {
     const userId = req.user.id;
