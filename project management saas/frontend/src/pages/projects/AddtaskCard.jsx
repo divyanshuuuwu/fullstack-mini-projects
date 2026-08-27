@@ -1,12 +1,18 @@
 import { X, Plus } from "lucide-react";
 import useTasks from "../../components/hooks/useTasks";
+import {useForm} from "react-hook-form";
 
 
 
-
-function AddTaskForm({ onClose, id }) {
+function AddTaskForm({ onClose, projectId }) {
+    const { register, handleSubmit } = useForm();
     const { showAddTaskCard, setShowAddTaskCard, createTask } = useTasks()
-    
+    const onSubmit = async (data) => {
+        console.log(data)
+        createTask(data.title, data.description, data.email,  data.priority, projectId)
+        setShowAddTaskCard(false)
+    }
+  
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
 
@@ -33,7 +39,7 @@ function AddTaskForm({ onClose, id }) {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
                     {/* Title */}
                     <div>
@@ -42,6 +48,7 @@ function AddTaskForm({ onClose, id }) {
                         </label>
 
                         <input
+                            {...register("title")}
                             type="text"
                             placeholder="e.g. Build authentication"
                             className="w-full rounded-xl border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-white/25"
@@ -55,6 +62,7 @@ function AddTaskForm({ onClose, id }) {
                         </label>
 
                         <textarea
+                            {...register("description")}    
                             rows="3"
                             placeholder="Describe the task..."
                             className="w-full resize-none rounded-xl border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-white/25"
@@ -68,6 +76,8 @@ function AddTaskForm({ onClose, id }) {
                         </label>
 
                         <input
+                            {...register("email")}
+                           
                             type="email"
                             placeholder="member@email.com"
                             className="w-full rounded-xl border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-600 transition focus:border-white/25"
@@ -77,12 +87,13 @@ function AddTaskForm({ onClose, id }) {
                     {/* Status + Priority */}
                     <div className="grid grid-cols-2 gap-3">
 
-                        <div>
+                        {/* <div>
                             <label className="mb-2 block text-sm text-gray-400">
                                 Status
                             </label>
 
                             <select
+                                {...register("status")}
                                 className="w-full rounded-xl border border-white/10 bg-[#181818] px-3 py-3 text-sm text-gray-300 outline-none"
                             >
                                 <option value="pending">Pending</option>
@@ -90,7 +101,7 @@ function AddTaskForm({ onClose, id }) {
                                 <option value="completed">Completed</option>
                                 <option value="overdue">Overdue</option>
                             </select>
-                        </div>
+                        </div> */}
 
                         <div>
                             <label className="mb-2 block text-sm text-gray-400">
@@ -98,6 +109,7 @@ function AddTaskForm({ onClose, id }) {
                             </label>
 
                             <select
+                                {...register("priority")}
                                 className="w-full rounded-xl border border-white/10 bg-[#181818] px-3 py-3 text-sm text-gray-300 outline-none"
                             >
                                 <option value="low">Low</option>

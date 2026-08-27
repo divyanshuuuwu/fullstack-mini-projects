@@ -82,7 +82,7 @@ const SingleProject = () => {
       {showAddTaskCard && (
             <AddtaskCard
                 onClose={() => setShowAddTaskCard(false)}
-                id
+                projectId = {id}
             />
         )}
 

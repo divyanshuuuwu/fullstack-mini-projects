@@ -34,13 +34,13 @@ const [taskbyId, setTaskById] = useState([])
         }
     }
 
-    const createTask = async(title, description, email, status, priority, id)=>{
+    const createTask = async(title, description, email, priority, projectId)=>{
         try{
-            const response = await axios.post(`http://localhost:3000/projects/tasks/create/{id}`, {
+            const response = await axios.post(`http://localhost:3000/projects/tasks/create/${projectId}`, {
                 title,
                 description,
                 email,
-                status,
+                status: "todo",
                 priority
             }, {
                 withCredentials: true
@@ -54,7 +54,7 @@ const [taskbyId, setTaskById] = useState([])
 
 
     return(
-        <TaskContext.Provider value={{tasks, taskbyId, getMytasks, getTaskById, showAddTaskCard, setShowAddTaskCard}}>
+        <TaskContext.Provider value={{tasks, taskbyId, getMytasks, getTaskById, showAddTaskCard, setShowAddTaskCard, createTask}}>
             {children}
         </TaskContext.Provider>
     )
