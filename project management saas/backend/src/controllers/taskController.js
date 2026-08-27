@@ -1,8 +1,9 @@
 const taskModel = require("../models/taskModel")
 const projectModel = require("../models/projectModel")
+const userModel = require("../models/userModel")
 
 const createTask = async(req , res)=>{
-    const {title, description, assignedTo, status, priority} = req.body
+    const {title, description, email, status, priority} = req.body
     const projectId = req.params.id;
   
     try{
@@ -11,16 +12,30 @@ const createTask = async(req , res)=>{
             return res.status(404).json({message: "Project not found or you don't have permission to add tasks to this project"})
         }
 
-        const memberExists = projectExists.members.some(member => member.toString() === assignedTo)
-        if(!memberExists){
-            return res.status(400).json({message: "Assigned user is not a member of the project"})
+        
+
+         const user = await userModel.findOne({ email });
+            if (!user) {
+            return res.status(400).json({ message: "email not found" });
+            }
+
+            // Make sure the user is a member of this project
+        const memberExists = projectExists.members.some(
+            member => member.toString() === user._id.toString()
+        );
+
+        if (!memberExists) {
+            return res.status(400).json({
+                message: "This user is not a member of the project"
+            });
         }
+            
 
         const newTask = await taskModel.create({
             title,
             description,
             project: projectId,
-            assignedTo,
+            assignedTo:user,
             status,
             priority
         })

@@ -16,13 +16,15 @@ import {
 import { NavLink, useParams } from "react-router-dom";
 import useProjects from "../../components/hooks/useProjects";
 import {useEffect} from "react"
+import AddtaskCard from "../projects/AddtaskCard"
 import useTasks from "../../components/hooks/useTasks";
 
 const SingleProject = () => {
   const { id } = useParams();
 
   const { projectbyId, getProjectById } = useProjects()
-  const { taskbyId, getTaskById } = useTasks()
+  const { taskbyId, getTaskById, showAddTaskCard, setShowAddTaskCard } = useTasks()
+
 
   useEffect(() => {
     getProjectById(id)
@@ -36,50 +38,12 @@ const SingleProject = () => {
   const tasks = taskbyId || [];
   const members = project.members || [];
 
-//   const members = [
-//     {
-//       id: 1,
-//       name: "Divyanshu",
-//       email: "divyanshu@example.com",
-//       role: "Owner",
-//     },
-//     {
-//       id: 2,
-//       name: "Rahul",
-//       email: "rahul@example.com",
-//       role: "Member",
-//     },
-//     {
-//       id: 3,
-//       name: "Aman",
-//       email: "aman@example.com",
-//       role: "Member",
-//     },
-//   ];
 
-//   const tasks = [
-//     {
-//       id: 1,
-//       title: "Create dashboard UI",
-//       assignedTo: "Rahul",
-//       status: "completed",
-//       priority: "high",
-//     },
-//     {
-//       id: 2,
-//       title: "Implement authentication",
-//       assignedTo: "Aman",
-//       status: "in-progress",
-//       priority: "high",
-//     },
-//     {
-//       id: 3,
-//       title: "Create task assignment API",
-//       assignedTo: "Divyanshu",
-//       status: "pending",
-//       priority: "medium",
-//     },
-//   ];
+{/* Add Task Modal */}
+  {showAddTaskCard && <AddtaskCard/>}
+
+
+
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -115,10 +79,16 @@ const SingleProject = () => {
 
   return (
     <div className="h-screen bg-[#0b0b0b] text-white p-6 lg:p-8 overflow-auto scrollbar-none">
+      {showAddTaskCard && (
+            <AddtaskCard
+                onClose={() => setShowAddTaskCard(false)}
+                id
+            />
+        )}
 
       {/* Back */}
       <NavLink
-        to="/projects"
+        to="/dashboard/projects"
         className="
           inline-flex
           items-center
@@ -241,6 +211,8 @@ const SingleProject = () => {
         <div className="flex items-center gap-2">
 
           <button
+            onClick={() => setShowAddTaskCard(true)}
+
             className="
               flex
               items-center
@@ -436,6 +408,7 @@ const SingleProject = () => {
             </div>
 
             <button
+            onClick={() => setShowAddTaskCard(true)}
               className="
                 flex
                 items-center

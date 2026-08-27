@@ -15,7 +15,6 @@ import CreateProject from "../pages/projects/CreateProject";
 import TaskDetails from "../pages/tasks/TaskDetails";
 import Teams from "../pages/myTeam/myTeam";
 import CreateTeam from "../pages/myTeam/CreateTeam";
-import ProjectDetails from "../pages/projects/ProjectDetails";
 import SingleProject from "../pages/projects/SingleProject";
 
 import Settings from "../pages/Settings";
@@ -66,11 +65,7 @@ const AppRouter = createBrowserRouter([
                     path: "createProject",
                     element: <CreateProject />
                 },
-                {
-                    path: "projectDetails",
-                    element: <ProjectDetails />
-                    
-                },
+               
                 {
                     path: "teams",
                     element: <Teams />

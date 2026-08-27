@@ -64,7 +64,7 @@ const MainContent = () => {
               {recentProjects.map((project) => (
                 <NavLink
                   key={project._id}
-                  to={`/projects/${project._id}`}
+                  to={`/dashboard/projects/${project._id}`}
                   className="group flex items-center justify-between gap-4
                                  px-4 py-4 rounded-xl
                                  hover:bg-[#171717]
