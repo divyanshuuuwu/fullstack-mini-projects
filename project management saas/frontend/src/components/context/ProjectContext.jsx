@@ -8,7 +8,7 @@ export const ProjectProvider =({children}) => {
 
 
 const [projects, setProjects] = useState([])
-
+const [projectbyId, setProjectById] = useState({})
 
 
 const getProjects = async()=>{
@@ -24,13 +24,24 @@ const getProjects = async()=>{
     }
 }
 
+const getProjectById = async(id)=>{
+    try{
+        const response = await axios.get(`http://localhost:3000/projects/get/${id}`, {
+                withCredentials: true
+            })
+            setProjectById(response.data.project)
+        console.log(response.data)
 
+    }catch(err){
+        console.log(err.response.data)
+    }
 
+}
 
 
 
 return(
- <ProjectContext.Provider value={{projects, setProjects, getProjects}}>
+ <ProjectContext.Provider value={{projects, projectbyId, getProjects, getProjectById}}>
     {children}
  </ProjectContext.Provider>
 

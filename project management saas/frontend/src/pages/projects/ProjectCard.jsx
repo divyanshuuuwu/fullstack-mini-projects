@@ -8,6 +8,7 @@ import {
   Circle,
   AlertCircle,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 import useProjects from "../../components/hooks/useProjects";
 
@@ -23,24 +24,21 @@ const ProjectCard = () => {
       case "completed":
         return {
           icon: <CheckCircle2 size={14} />,
-          className:
-            "text-gray-300 bg-[#1b1b1b] border-[#303030]",
+          className: "text-gray-300 bg-[#1b1b1b] border-[#303030]",
           label: "Completed",
         };
 
       case "in-progress":
         return {
           icon: <Clock3 size={14} />,
-          className:
-            "text-gray-300 bg-[#181818] border-[#292929]",
+          className: "text-gray-300 bg-[#181818] border-[#292929]",
           label: "In Progress",
         };
 
       case "overdue":
         return {
           icon: <AlertCircle size={14} />,
-          className:
-            "text-gray-400 bg-[#181818] border-[#292929]",
+          className: "text-gray-400 bg-[#181818] border-[#292929]",
           label: "Overdue",
         };
 
@@ -48,8 +46,7 @@ const ProjectCard = () => {
       default:
         return {
           icon: <Circle size={14} />,
-          className:
-            "text-gray-500 bg-[#151515] border-[#252525]",
+          className: "text-gray-500 bg-[#151515] border-[#252525]",
           label: "Pending",
         };
     }
@@ -85,7 +82,6 @@ const ProjectCard = () => {
 
   return (
     <div>
-
       {/* Project count */}
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs text-gray-600">
@@ -106,16 +102,16 @@ const ProjectCard = () => {
         xl:grid-cols-3
         gap-4
       ">
-
         {projects.map((project) => {
-
           const status = getStatusStyles(project.status);
 
           return (
-            <div
+            <NavLink
               key={project._id}
+              to={`/dashboard/projects/${project._id}`}
               className="
                 group
+                block
                 bg-[#111111]
                 border border-[#1f1f1f]
                 rounded-2xl
@@ -126,7 +122,6 @@ const ProjectCard = () => {
                 cursor-pointer
               "
             >
-
               {/* Top */}
               <div className="
                 flex
@@ -134,14 +129,12 @@ const ProjectCard = () => {
                 justify-between
                 mb-5
               ">
-
                 <div className="
                   flex
                   items-center
                   gap-3
                   min-w-0
                 ">
-
                   {/* Project icon */}
                   <div className="
                     w-10 h-10
@@ -159,7 +152,6 @@ const ProjectCard = () => {
 
                   {/* Name */}
                   <div className="min-w-0">
-
                     <h3 className="
                       text-sm
                       font-medium
@@ -181,14 +173,13 @@ const ProjectCard = () => {
                         project.createdAt
                       ).toLocaleDateString()}
                     </p>
-
                   </div>
-
                 </div>
 
                 {/* More button */}
                 <button
                   type="button"
+                  onClick={(e) => e.preventDefault()}
                   className="
                     p-1.5
                     rounded-lg
@@ -200,7 +191,6 @@ const ProjectCard = () => {
                 >
                   <MoreHorizontal size={17} />
                 </button>
-
               </div>
 
               {/* Description */}
@@ -222,7 +212,6 @@ const ProjectCard = () => {
                 gap-2
                 mb-5
               ">
-
                 {/* Status */}
                 <span
                   className={`
@@ -254,7 +243,6 @@ const ProjectCard = () => {
                 ">
                   {project.priority} priority
                 </span>
-
               </div>
 
               {/* Members */}
@@ -265,13 +253,11 @@ const ProjectCard = () => {
                 items-center
                 justify-between
               ">
-
                 <div className="
                   flex
                   items-center
                   gap-2
                 ">
-
                   <Users
                     size={14}
                     className="text-gray-600"
@@ -286,7 +272,6 @@ const ProjectCard = () => {
                       ? "member"
                       : "members"}
                   </span>
-
                 </div>
 
                 {/* Owner */}
@@ -296,13 +281,10 @@ const ProjectCard = () => {
                 ">
                   Owner
                 </span>
-
               </div>
-
-            </div>
+            </NavLink>
           );
         })}
-
       </div>
     </div>
   );

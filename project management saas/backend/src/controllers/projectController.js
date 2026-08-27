@@ -56,7 +56,7 @@ const getProjectById = async (req, res) => {
     const userId = req.user.id;
 
     try{
-        const project = await projectModel.findOne({ _id: projectId, owner: userId });
+        const project = await projectModel.findOne({ _id: projectId, owner: userId }).populate("members", "-password");
         if(!project){
             return res.status(404).json({ message: "Project not found" });
         }

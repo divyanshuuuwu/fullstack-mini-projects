@@ -4,8 +4,8 @@ import { useState, createContext,   } from "react";
 export const TaskContext = createContext()
 export const TaskProvider = ({children})=>{
 
-    const [tasks, setTasks] = useState(null)
-
+const [tasks, setTasks] = useState([])
+const [taskbyId, setTaskById] = useState([])
 
     const getMytasks = async()=>{
         try{
@@ -20,9 +20,22 @@ export const TaskProvider = ({children})=>{
         }
     }
 
+    const getTaskById = async(id)=>{
+        try{
+            const response = await axios.get(`http://localhost:3000/projects/tasks/getalltasks/${id}`, {
+                withCredentials: true
+            })
+            setTaskById(response.data.tasks)
+            console.log(response.data)
+
+        }catch(err){
+            console.log(err.response.data)
+        }
+    }
+
 
     return(
-        <TaskContext.Provider value={{tasks, setTasks, getMytasks}}> 
+        <TaskContext.Provider value={{tasks, taskbyId, getMytasks, getTaskById}}>
             {children}
         </TaskContext.Provider>
     )
