@@ -32,7 +32,7 @@ const SingleProject = () => {
 
   useEffect(() => {
     getTaskById(id)
-  }, [])
+  }, [id])
 
   const project = projectbyId
   const tasks = taskbyId || [];
