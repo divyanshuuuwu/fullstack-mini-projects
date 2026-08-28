@@ -34,14 +34,15 @@ const [taskbyId, setTaskById] = useState([])
         }
     }
 
-    const createTask = async(title, description, email, priority, projectId)=>{
+    const createTask = async(title, description, email, priority, projectId, dueDate)=>{
         try{
             const response = await axios.post(`http://localhost:3000/projects/tasks/create/${projectId}`, {
                 title,
                 description,
                 email,
                 status: "todo",
-                priority
+                priority,
+                dueDate
             }, {
                 withCredentials: true
             })

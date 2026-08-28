@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Search,
   SlidersHorizontal,
@@ -11,89 +12,77 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import useTasks from "../../components/hooks/useTasks";
+import { useEffect } from "react";
 
 const Tasks = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [filter, setFilter] = useState("all");
 
-  // Temporary data — later replace this with your API data
-  const [tasks, setTasks] = useState([
-    {
-      _id: "1",
-      title: "Design login and register pages",
-      description:
-        "Create the login and registration pages for the Flowboard application.",
-      project: "Flowboard",
-      status: "pending",
-      priority: "high",
-      dueDate: "Aug 30",
-    },
-    {
-      _id: "2",
-      title: "Fix sidebar responsiveness",
-      description:
-        "Make the sidebar responsive for tablet and mobile screen sizes.",
-      project: "Flowboard",
-      status: "in-progress",
-      priority: "medium",
-      dueDate: "Sep 01",
-    },
-    {
-      _id: "3",
-      title: "Create authentication middleware",
-      description:
-        "Implement JWT authentication middleware on the backend.",
-      project: "Flowboard",
-      status: "in-progress",
-      priority: "high",
-      dueDate: "Sep 02",
-    },
-    {
-      _id: "4",
-      title: "Create team settings page",
-      description:
-        "Build the team settings page where members can manage their team.",
-      project: "Flowboard",
-      status: "pending",
-      priority: "low",
-      dueDate: "Sep 05",
-    },
-    {
-      _id: "5",
-      title: "Write API documentation",
-      description:
-        "Document the project and task APIs for future development.",
-      project: "Flowboard",
-      status: "completed",
-      priority: "low",
-      dueDate: "Aug 25",
-    },
-  ]);
+  const {
+    tasks,
+    getTaskById,
+    getMytasks,
+  } = useTasks();
+  useEffect(() => {
+    getMytasks();
+  }, []);
 
   const filteredTasks =
     filter === "all"
       ? tasks
       : tasks.filter((task) => task.status === filter);
 
-  const updateTaskStatus = (taskId, newStatus) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task._id === taskId
-          ? { ...task, status: newStatus }
-          : task
-      )
-    );
+  // --------------------------------
+  // GET SINGLE TASK
+  // --------------------------------
+  const handleTaskClick = async (taskId) => {
+    try {
+      const task = await getTaskById(taskId);
 
-    setSelectedTask((prev) =>
-      prev ? { ...prev, status: newStatus } : null
-    );
-
-    // Later:
-    // axios.patch(`/tasks/update/${taskId}`, {
-    //   status: newStatus
-    // });
+      setSelectedTask(task);
+    } catch (error) {
+      console.error("Failed to get task:", error);
+    }
   };
 
+  // --------------------------------
+  // UPDATE ONLY STATUS
+  // --------------------------------
+  const updateTaskStatus = async (taskId, newStatus) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/projects/tasks/update/${taskId}`,
+        {
+          status: newStatus,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("Status updated:", response.data);
+
+      // Update drawer immediately
+      setSelectedTask((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: newStatus,
+            }
+          : null
+      );
+    } catch (error) {
+      console.error(
+        "Failed to update status:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  // --------------------------------
+  // PRIORITY STYLE
+  // --------------------------------
   const getPriorityStyle = (priority) => {
     if (priority === "high") {
       return "text-red-400 bg-red-500/10 border-red-500/20";
@@ -106,6 +95,9 @@ const Tasks = () => {
     return "text-green-400 bg-green-500/10 border-green-500/20";
   };
 
+  // --------------------------------
+  // STATUS ICON
+  // --------------------------------
   const getStatusIcon = (status) => {
     if (status === "completed") {
       return <CheckCircle2 size={17} />;
@@ -118,21 +110,37 @@ const Tasks = () => {
     return <Circle size={17} />;
   };
 
+  // --------------------------------
+  // STATUS NAME
+  // --------------------------------
   const getStatusName = (status) => {
-    if (status === "in-progress") return "In Progress";
-    if (status === "completed") return "Completed";
+    if (status === "in-progress") {
+      return "In Progress";
+    }
+
+    if (status === "completed") {
+      return "Completed";
+    }
+
     return "To Do";
   };
 
   return (
     <div className="min-h-screen bg-[#080808] text-white">
+
+      {/* ============================= */}
       {/* MAIN CONTENT */}
+      {/* ============================= */}
+
       <div className="p-8">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-8">
+
           <div>
-            <h1 className="text-3xl font-semibold">My Tasks</h1>
+            <h1 className="text-3xl font-semibold">
+              My Tasks
+            </h1>
 
             <p className="text-gray-500 mt-1">
               Tasks assigned to you across all projects.
@@ -143,27 +151,43 @@ const Tasks = () => {
 
             {/* SEARCH */}
             <div className="flex items-center gap-2 bg-[#111] border border-white/10 rounded-lg px-4 py-2.5 w-64">
-              <Search size={18} className="text-gray-500" />
+
+              <Search
+                size={18}
+                className="text-gray-500"
+              />
 
               <input
                 type="text"
                 placeholder="Search tasks..."
                 className="bg-transparent outline-none text-sm w-full placeholder:text-gray-600"
               />
+
             </div>
 
             {/* FILTER */}
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-[#111] border border-white/10 rounded-lg text-sm text-gray-300 hover:bg-[#161616]">
+            <button
+              type="button"
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#111] border border-white/10 rounded-lg text-sm text-gray-300 hover:bg-[#161616]"
+            >
               <SlidersHorizontal size={17} />
+
               Filter
+
               <ChevronDown size={15} />
             </button>
+
           </div>
         </div>
 
+
+        {/* ============================= */}
         {/* STATUS FILTERS */}
+        {/* ============================= */}
+
         <div className="flex gap-8 border-b border-white/10 mb-7">
 
+          {/* ALL */}
           <button
             onClick={() => setFilter("all")}
             className={`pb-4 text-sm ${
@@ -173,11 +197,14 @@ const Tasks = () => {
             }`}
           >
             All
+
             <span className="ml-2 text-xs bg-white/10 px-2 py-1 rounded-full">
               {tasks.length}
             </span>
           </button>
 
+
+          {/* TO DO */}
           <button
             onClick={() => setFilter("pending")}
             className={`pb-4 text-sm ${
@@ -189,6 +216,8 @@ const Tasks = () => {
             To Do
           </button>
 
+
+          {/* IN PROGRESS */}
           <button
             onClick={() => setFilter("in-progress")}
             className={`pb-4 text-sm ${
@@ -200,6 +229,8 @@ const Tasks = () => {
             In Progress
           </button>
 
+
+          {/* COMPLETED */}
           <button
             onClick={() => setFilter("completed")}
             className={`pb-4 text-sm ${
@@ -210,43 +241,52 @@ const Tasks = () => {
           >
             Completed
           </button>
+
         </div>
 
+
+        {/* ============================= */}
         {/* TASK LIST */}
+        {/* ============================= */}
+
         <div className="max-w-5xl space-y-3">
 
           {filteredTasks.length === 0 && (
+
             <div className="py-20 text-center text-gray-600">
+
               <CheckCircle2
                 size={40}
                 className="mx-auto mb-3 opacity-50"
               />
 
               <p>No tasks found</p>
+
             </div>
+
           )}
 
+
           {filteredTasks.map((task) => (
+
             <div
               key={task._id}
-              onClick={() => setSelectedTask(task)}
-              className={`group cursor-pointer border rounded-xl p-5 transition-all
-                ${
-                  selectedTask?._id === task._id
-                    ? "border-purple-500/70 bg-[#111]"
-                    : "border-white/10 bg-[#0d0d0d] hover:border-white/20 hover:bg-[#111]"
-                }
-              `}
+              onClick={() => handleTaskClick(task._id)}
+              className={`group cursor-pointer border rounded-xl p-5 transition-all ${
+                selectedTask?._id === task._id
+                  ? "border-purple-500/70 bg-[#111]"
+                  : "border-white/10 bg-[#0d0d0d] hover:border-white/20 hover:bg-[#111]"
+              }`}
             >
+
               <div className="flex items-center justify-between">
 
                 {/* LEFT */}
                 <div className="flex items-center gap-4">
 
-                  {/* STATUS CIRCLE */}
+                  {/* STATUS */}
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center
-                    ${
+                    className={`w-9 h-9 rounded-full flex items-center justify-center ${
                       task.status === "completed"
                         ? "text-green-400 bg-green-500/10"
                         : task.status === "in-progress"
@@ -257,17 +297,28 @@ const Tasks = () => {
                     {getStatusIcon(task.status)}
                   </div>
 
+
                   <div>
+
+                    {/* TITLE */}
                     <h3 className="font-medium text-white">
                       {task.title}
                     </h3>
 
+
+                    {/* PROJECT */}
                     <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+
                       <Folder size={13} />
-                      {task.project}
+
+                      {task.project?.name}
+
                     </div>
+
                   </div>
+
                 </div>
+
 
                 {/* RIGHT */}
                 <div className="flex items-center gap-5">
@@ -281,20 +332,39 @@ const Tasks = () => {
                     {task.priority}
                   </span>
 
-                  {/* DATE */}
+
+                  {/* DUE DATE */}
                   <div className="flex items-center gap-2 text-xs text-gray-500">
+
                     <Calendar size={14} />
-                    {task.dueDate}
+
+                    {task.dueDate
+                      ? new Date(
+                          task.dueDate
+                        ).toLocaleDateString()
+                      : "No due date"}
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
           ))}
+
         </div>
+
       </div>
 
+
+      {/* ============================= */}
       {/* TASK DETAILS DRAWER */}
+      {/* ============================= */}
+
       {selectedTask && (
+
         <div className="fixed inset-y-0 right-0 w-[420px] bg-[#0c0c0c] border-l border-white/10 shadow-2xl z-50">
 
           {/* DRAWER HEADER */}
@@ -310,7 +380,9 @@ const Tasks = () => {
             >
               <X size={20} />
             </button>
+
           </div>
+
 
           <div className="p-6 overflow-y-auto h-[calc(100vh-73px)]">
 
@@ -319,13 +391,18 @@ const Tasks = () => {
               {selectedTask.title}
             </h2>
 
+
             {/* PROJECT + PRIORITY */}
             <div className="flex items-center gap-3 mt-4">
 
               <div className="flex items-center gap-2 text-sm text-purple-400">
+
                 <Folder size={15} />
-                {selectedTask.project}
+
+                {selectedTask.project?.name}
+
               </div>
+
 
               <span
                 className={`px-3 py-1 rounded-full border text-xs capitalize ${getPriorityStyle(
@@ -334,7 +411,9 @@ const Tasks = () => {
               >
                 {selectedTask.priority} priority
               </span>
+
             </div>
+
 
             {/* STATUS */}
             <div className="mt-8">
@@ -342,6 +421,7 @@ const Tasks = () => {
               <label className="block text-sm text-gray-400 mb-2">
                 Status
               </label>
+
 
               <div className="relative">
 
@@ -355,6 +435,7 @@ const Tasks = () => {
                   }
                   className="w-full appearance-none bg-[#151515] border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-purple-500"
                 >
+
                   <option value="pending">
                     To Do
                   </option>
@@ -366,14 +447,19 @@ const Tasks = () => {
                   <option value="completed">
                     Completed
                   </option>
+
                 </select>
+
 
                 <ChevronDown
                   size={17}
                   className="absolute right-4 top-3.5 text-gray-500 pointer-events-none"
                 />
+
               </div>
+
             </div>
+
 
             {/* DUE DATE */}
             <div className="mt-6">
@@ -382,11 +468,24 @@ const Tasks = () => {
                 Due Date
               </label>
 
+
               <div className="flex items-center gap-3 bg-[#151515] border border-white/10 rounded-lg px-4 py-3 text-sm text-gray-300">
-                <Calendar size={17} className="text-gray-500" />
-                {selectedTask.dueDate}
+
+                <Calendar
+                  size={17}
+                  className="text-gray-500"
+                />
+
+                {selectedTask.dueDate
+                  ? new Date(
+                      selectedTask.dueDate
+                    ).toLocaleDateString()
+                  : "No due date"}
+
               </div>
+
             </div>
+
 
             {/* DESCRIPTION */}
             <div className="mt-6">
@@ -395,18 +494,27 @@ const Tasks = () => {
                 Description
               </label>
 
+
               <div className="bg-[#151515] border border-white/10 rounded-lg p-4 text-sm text-gray-400 leading-relaxed">
+
                 {selectedTask.description}
+
               </div>
+
             </div>
+
 
             {/* CURRENT STATUS */}
             <div className="mt-8">
 
               <div className="flex items-center gap-2 text-sm text-gray-400 mb-3">
+
                 <AlertCircle size={16} />
+
                 Current Status
+
               </div>
+
 
               <div className="flex items-center gap-3 bg-[#151515] rounded-lg p-4">
 
@@ -421,10 +529,15 @@ const Tasks = () => {
                 />
 
                 <span className="text-sm">
-                  {getStatusName(selectedTask.status)}
+                  {getStatusName(
+                    selectedTask.status
+                  )}
                 </span>
+
               </div>
+
             </div>
+
 
             {/* QUICK ACTIONS */}
             <div className="mt-8">
@@ -433,8 +546,10 @@ const Tasks = () => {
                 Quick Update
               </p>
 
+
               <div className="grid grid-cols-3 gap-2">
 
+                {/* TO DO */}
                 <button
                   onClick={() =>
                     updateTaskStatus(
@@ -447,6 +562,8 @@ const Tasks = () => {
                   To Do
                 </button>
 
+
+                {/* IN PROGRESS */}
                 <button
                   onClick={() =>
                     updateTaskStatus(
@@ -459,6 +576,8 @@ const Tasks = () => {
                   In Progress
                 </button>
 
+
+                {/* COMPLETED */}
                 <button
                   onClick={() =>
                     updateTaskStatus(
@@ -470,20 +589,28 @@ const Tasks = () => {
                 >
                   Done
                 </button>
+
               </div>
+
             </div>
 
           </div>
+
         </div>
+
       )}
+
 
       {/* BACKDROP */}
       {selectedTask && (
+
         <div
           onClick={() => setSelectedTask(null)}
           className="fixed inset-0 bg-black/40 z-40"
         />
+
       )}
+
     </div>
   );
 };

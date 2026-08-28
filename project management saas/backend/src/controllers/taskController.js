@@ -3,7 +3,7 @@ const projectModel = require("../models/projectModel")
 const userModel = require("../models/userModel")
 
 const createTask = async(req , res)=>{
-    const {title, description, email, status, priority} = req.body
+    const {title, description, email, status, priority, dueDate} = req.body
     const projectId = req.params.id;
   
     try{
@@ -37,7 +37,8 @@ const createTask = async(req , res)=>{
             project: projectId,
             assignedTo:user,
             status,
-            priority
+            priority,
+            dueDate
         })
         res.status(201).json({message: "Task created successfully", task: newTask})
 
@@ -97,7 +98,7 @@ const getMyTasks = async (req, res) => {
     try {
         const tasks = await taskModel.find({
             assignedTo: userId
-        });
+        }).populate("project", "name")
 
         res.status(200).json({
             message: "Tasks retrieved successfully",
@@ -112,6 +113,23 @@ const getMyTasks = async (req, res) => {
     }
 };
 
+const updateTask = async(req, res)=>{
+    const { status} = req.body
+    const taskId = req.params.taskId;
+    const userId = req.user.id;
+    try{
+        const task = await taskModel.findOne({_id: taskId, assignedTo: userId})
+        if(!task){
+            return res.status(404).json({message: "Task not found or you don't have permission to view this task"})
+        }
+        const updatedTask = await taskModel.findOneAndUpdate({_id: taskId}, { status},{ new: true })
+        res.status(200).json({message: "Task updated successfully", task: updatedTask})
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "error updating task", error: err.message})
+    }
+}   
 
 
-module.exports = {createTask, getTasks, getTaskById, getMyTasks}
+
+module.exports = {createTask, getTasks, getTaskById, getMyTasks, updateTask}
