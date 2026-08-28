@@ -22,7 +22,7 @@ app.use(cookieParser())
 
 app.use("/auth", authRoute)
 app.use("/projects", projectRoute);
-app.use("/projects/tasks", taskRoute);
+app.use("/tasks", taskRoute);
 app.use("/teams", teamRoute);
 
 

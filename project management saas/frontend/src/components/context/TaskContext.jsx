@@ -1,65 +1,122 @@
 import axios from "axios";
-import { useState, createContext,   } from "react";
+import { useState, createContext } from "react";
 
-export const TaskContext = createContext()
-export const TaskProvider = ({children})=>{
+export const TaskContext = createContext();
 
-const [tasks, setTasks] = useState([])
-const [taskbyId, setTaskById] = useState([])
-  const [showAddTaskCard, setShowAddTaskCard] = useState(false);
+export const TaskProvider = ({ children }) => {
 
-    const getMytasks = async()=>{
-        try{
-            const response = await axios.get("http://localhost:3000/projects/tasks/mytasks", {
-                withCredentials: true
-            })
-            setTasks(response.data.tasks)
-            console.log(response.data)
-            console.log(tasks)
+    const [tasks, setTasks] = useState([]);
+    const [taskbyId, setTaskById] = useState(null);
+    const [showAddTaskCard, setShowAddTaskCard] = useState(false);
+
+
+    // GET MY TASKS
+    const getMytasks = async () => {
+        try {
+
+            const response = await axios.get(
+                "http://localhost:3000/tasks/mytasks",
+                {
+                    withCredentials: true
+                }
+            );
+
+            setTasks(response.data.tasks);
+
         } catch (error) {
-            console.error("Error fetching tasks:", error);
+
+            console.error(
+                "Error fetching my tasks:",
+                error.response?.data || error.message
+            );
+
         }
-    }
+    };
 
-    const getTaskById = async(id)=>{
-        try{
-            const response = await axios.get(`http://localhost:3000/projects/tasks/getalltasks/${id}`, {
-                withCredentials: true
-            })
-            setTaskById(response.data.tasks)
-            console.log(response.data)
 
-        }catch(err){
-            console.log(err.response.data)
+    // GET ONE TASK
+    const getTaskById = async (taskId) => {
+        try {
+
+            const response = await axios.get(
+                `http://localhost:3000/tasks/gettask/${taskId}`,
+                {
+                    withCredentials: true
+                }
+            );
+
+            setTaskById(response.data.task);
+
+            return response.data.task;
+
+        } catch (error) {
+
+            console.error(
+                "Error fetching task:",
+                error.response?.data || error.message
+            );
+
+            return null;
         }
-    }
+    };
 
-    const createTask = async(title, description, email, priority, projectId, dueDate)=>{
-        try{
-            const response = await axios.post(`http://localhost:3000/projects/tasks/create/${projectId}`, {
-                title,
-                description,
-                email,
-                status: "todo",
-                priority,
-                dueDate
-            }, {
-                withCredentials: true
-            })
-            console.log(response.data)
-            setShowAddTaskCard(false)
-        }catch(err){
-            console.log(err.response.data)
+
+    // CREATE TASK
+    const createTask = async (
+        title,
+        description,
+        email,
+        priority,
+        projectId,
+        dueDate
+    ) => {
+
+        try {
+
+            const response = await axios.post(
+                `http://localhost:3000/tasks/create/${projectId}`,
+                {
+                    title,
+                    description,
+                    email,
+                    status: "pending",
+                    priority,
+                    dueDate
+                },
+                {
+                    withCredentials: true
+                }
+            );
+
+            console.log(response.data);
+
+            setShowAddTaskCard(false);
+
+        } catch (error) {
+
+            console.error(
+                "Error creating task:",
+                error.response?.data || error.message
+            );
+
         }
-    }
+    };
 
 
-    return(
-        <TaskContext.Provider value={{tasks, taskbyId, getMytasks, getTaskById, showAddTaskCard, setShowAddTaskCard, createTask}}>
+    return (
+        <TaskContext.Provider
+            value={{
+                tasks,
+                setTasks,
+                taskbyId,
+                getMytasks,
+                getTaskById,
+                showAddTaskCard,
+                setShowAddTaskCard,
+                createTask
+            }}
+        >
             {children}
         </TaskContext.Provider>
-    )
-}
-
-
-
+    );
+};
