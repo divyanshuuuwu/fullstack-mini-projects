@@ -47,13 +47,13 @@ const SingleProject = () => {
 
     const getStatusIcon = (status) => {
         switch (status) {
-            case "completed":
+            case "done":
                 return <CheckCircle2 size={14} />;
 
             case "in-progress":
                 return <Clock3 size={14} />;
 
-            case "overdue":
+            case "to-do":
                 return <AlertCircle size={14} />;
 
             default:
@@ -64,17 +64,15 @@ const SingleProject = () => {
 
     const getStatusLabel = (status) => {
         switch (status) {
-            case "completed":
-                return "Completed";
+            case "done":
+                return "done";
 
             case "in-progress":
                 return "In Progress";
 
-            case "overdue":
-                return "Overdue";
-
             default:
-                return "Pending";
+                return "to-do";
+
         }
     };
 
