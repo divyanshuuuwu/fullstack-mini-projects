@@ -45,7 +45,7 @@ export const TaskProvider = ({ children }) => {
                 }
             );
 
-            console.log("MY TASKS:", response.data.tasks);
+           
 
             setTasks(
                 Array.isArray(response.data.tasks)

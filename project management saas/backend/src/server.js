@@ -16,7 +16,7 @@ const io = new Server(server, {
 });
 
 
-const socketSetup = require("./sockets/socket");
+const socketSetup = require("./sockets/backendSocket");
 socketSetup(io);
 
 

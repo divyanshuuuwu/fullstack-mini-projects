@@ -7,7 +7,7 @@ import { AuthProvider } from './components/context/authContext'
 import { ProjectProvider } from './components/context/ProjectContext'
 import { TaskProvider } from './components/context/TaskContext'                 
 import { TeamProvider } from './components/context/TeamContext'
-import "./Services/socket";
+
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>

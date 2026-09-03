@@ -7,6 +7,7 @@ const authRoute = require("./routes/authRoute")
 const projectRoute = require("./routes/projectRoute")
 const taskRoute = require("./routes/taskRoute")
 const teamRoute = require("./routes/teamRoute")
+const notificationRoute = require("./routes/notificationRoute")
 
 const cors = require("cors");
 app.use(cors({
@@ -24,7 +25,7 @@ app.use("/auth", authRoute)
 app.use("/projects", projectRoute);
 app.use("/tasks", taskRoute);
 app.use("/teams", teamRoute);
-
+app.use("/notifications", notificationRoute);
 
 
 

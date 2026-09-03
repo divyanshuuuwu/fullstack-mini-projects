@@ -15,8 +15,8 @@ const MemberCard = ({member}) => {
               >
 
                 <img
-                  src=""
-                  alt=""
+                  src="zyx"
+                  alt="err"
                   className="
                     w-8 h-8
                     rounded-full
