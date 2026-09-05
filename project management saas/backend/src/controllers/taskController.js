@@ -204,8 +204,6 @@ const getMyTasks = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        console.log("========== GET MY TASKS ==========");
-        console.log("User ID:", userId);
 
         const tasks = await taskModel
             .find({
@@ -214,7 +212,7 @@ const getMyTasks = async (req, res) => {
             .populate("assignedTo", "name email")
             .populate("project", "name");
 
-        console.log("My tasks:", tasks);
+      
 
         res.status(200).json({
             message: "Tasks retrieved successfully",

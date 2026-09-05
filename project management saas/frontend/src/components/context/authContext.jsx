@@ -49,7 +49,7 @@ const getUser = async()=>{
    
         setUser(response.data.user)
     setIsAuthenticated(true)
-    console.log(response.data.user)
+    
     
 
 

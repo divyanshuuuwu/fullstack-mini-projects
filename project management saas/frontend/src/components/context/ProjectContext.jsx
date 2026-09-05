@@ -17,7 +17,6 @@ const getProjects = async()=>{
                 withCredentials: true
             })
             setProjects(response.data.projects)
-        console.log(response.data)
 
     }catch(err){
         console.log(err.response.data)
@@ -30,7 +29,7 @@ const getProjectById = async(id)=>{
                 withCredentials: true
             })
             setProjectById(response.data.project)
-        console.log(response.data)
+        
 
     }catch(err){
         console.log(err.response.data)

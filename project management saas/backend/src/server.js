@@ -6,6 +6,9 @@ const PORT = 3000
 connectDB()
 const { Server } = require("socket.io");
 const server = http.createServer(app);
+const socketSetup = require("./sockets/backendSocket");
+const cookieParser = require("cookie-parser")
+const socketAuthMiddleWare = require("./middlewares/socketAuthMiddleware")
 
 
 const io = new Server(server, {
@@ -15,8 +18,11 @@ const io = new Server(server, {
     }
 });
 
+io.engine.use(require("cookie-parser")());
+io.use(socketAuthMiddleWare)
 
-const socketSetup = require("./sockets/backendSocket");
+
+
 socketSetup(io);
 
 

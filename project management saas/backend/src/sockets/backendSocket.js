@@ -1,13 +1,15 @@
 // Backend for socket.io
+const notificationHandler = require("../sockets/notifications")
 
 
-
-module.exports = (io) => {
+const socketSetup= (io) => {
 
     io.on("connection", (socket) => {
 
         console.log("User connected:", socket.id);
-
+        console.log( "socket.userId:", socket.userId)
+        
+        notificationHandler(io, socket)
        
 
 
@@ -18,3 +20,5 @@ module.exports = (io) => {
     });
 
 };
+
+module.exports = socketSetup;
