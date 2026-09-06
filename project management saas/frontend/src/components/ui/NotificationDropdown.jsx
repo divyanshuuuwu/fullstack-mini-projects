@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Bell, Check, X } from "lucide-react";
 import axios from "axios";
 
-import socket from "../../services/socket";
+import socket from "../../Services/socket";
 
 const NotificationDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
