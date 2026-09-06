@@ -2,6 +2,7 @@
 import { NavLink } from "react-router-dom";
 import { Layers } from "lucide-react";
 import useAuth from "../hooks/useAuth";
+import NotificationDropdown from "../ui/NotificationDropdown";
 
 const Siderbar = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ const Siderbar = () => {
 
       {/* Navigation */}
       <nav className="flex flex-col p-6 gap-5">
+        <NotificationDropdown />
         <NavLink
           to="/dashboard"
           end
@@ -86,6 +88,9 @@ const Siderbar = () => {
         >
           Settings
         </NavLink>
+
+          
+
       </nav>
 
       {/* profile */}

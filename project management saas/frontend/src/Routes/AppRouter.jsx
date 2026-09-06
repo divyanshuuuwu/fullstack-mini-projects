@@ -22,6 +22,7 @@ import Settings from "../pages/Settings";
 import Profile from "../pages/Profile";
 
 
+
 const AppRouter = createBrowserRouter([
 
     // Public Routes
@@ -83,6 +84,8 @@ const AppRouter = createBrowserRouter([
                     path: "settings",
                     element: <Settings />
                 },
+              
+                
                 {
                     path: "profile",
                     element: <Profile />

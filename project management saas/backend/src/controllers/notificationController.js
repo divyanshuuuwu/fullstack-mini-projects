@@ -43,7 +43,16 @@ const createNotification = async (req, res) => {
             project,
             task
         });
-        
+
+        // Get socket.IO instance from Express app 
+        const io = req.app.get("io");
+
+        // Send notification to recipient in real time
+        io.to(recipientUser._id.toString()).emit("notification", {
+            notification
+        });
+
+
         res.status(201).json({
             message: "Notification created successfully",
             notification
@@ -60,6 +69,27 @@ const createNotification = async (req, res) => {
 
 
 
+const getNotifications = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const notifications = await notificationModel.find({
+            recipient: userId
+        });
+        res.status(200).json({
+            message: "Notifications retrieved successfully",
+            notifications
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: "Error retrieving notifications",
+            error: err.message
+        });
+    }   
+}
 
 
-module.exports = {createNotification}   
+
+
+
+module.exports = {createNotification, getNotifications}   
